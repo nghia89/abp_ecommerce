@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\common.props" />
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>ABPEcommerce.Admin</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ABPEcommerce.Domain.Shared\ABPEcommerce.Domain.Shared.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.ObjectExtending" Version="6.0.2" />
+		<PackageReference Include="Volo.Abp.Account.Application.Contracts" Version="6.0.2" />
+		<PackageReference Include="Volo.Abp.Identity.Application.Contracts" Version="6.0.2" />
+		<PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="6.0.2" />
+		<PackageReference Include="Volo.Abp.TenantManagement.Application.Contracts" Version="6.0.2" />
+		<PackageReference Include="Volo.Abp.FeatureManagement.Application.Contracts" Version="6.0.2" />
+		<PackageReference Include="Volo.Abp.SettingManagement.Application.Contracts" Version="6.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+	</ItemGroup>
+</Project>
