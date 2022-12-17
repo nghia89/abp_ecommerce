@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29020.237
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABPEcommerce.Domain", "src\ABPEcommerce.Domain\ABPEcommerce.Domain.csproj", "{554AD327-6DBA-4F8F-96F8-81CE7A0C863F}"
 EndProject
@@ -43,21 +43,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{AADE71
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domain", "domain", "{51BA9CE4-D5A5-4012-AB15-FB8D5FA8B675}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "identity", "identity", "{3EC76AB7-8492-4151-ACC4-CA474BB90166}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "auth", "auth", "{3EC76AB7-8492-4151-ACC4-CA474BB90166}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{B0E0A0CC-BB13-488C-A3E6-0699CEF49546}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "admin", "admin", "{C2A37741-4314-4FD8-9339-36AC7D077CB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABPEcommerce.Admin.Application", "src\ABPEcommerce.Admin.Application\ABPEcommerce.Admin.Application.csproj", "{D2AAE3FB-6C8A-4EA6-830E-897F7761C568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABPEcommerce.Admin.Application", "src\ABPEcommerce.Admin.Application\ABPEcommerce.Admin.Application.csproj", "{D2AAE3FB-6C8A-4EA6-830E-897F7761C568}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABPEcommerce.Admin.Application.Contracts", "src\ABPEcommerce.Admin.Application.Contracts\ABPEcommerce.Admin.Application.Contracts.csproj", "{D472E375-287B-431A-9F6A-A9405A436701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABPEcommerce.Admin.Application.Contracts", "src\ABPEcommerce.Admin.Application.Contracts\ABPEcommerce.Admin.Application.Contracts.csproj", "{D472E375-287B-431A-9F6A-A9405A436701}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABPEcommerce.Admin.HttpApi", "src\ABPEcommerce.Admin.HttpApi\ABPEcommerce.Admin.HttpApi.csproj", "{0279FE69-624A-406C-AA5B-1A12FB08AA3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABPEcommerce.Admin.HttpApi", "src\ABPEcommerce.Admin.HttpApi\ABPEcommerce.Admin.HttpApi.csproj", "{0279FE69-624A-406C-AA5B-1A12FB08AA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABPEcommerce.Admin.HttpApi.Client", "src\ABPEcommerce.Admin.HttpApi.Client\ABPEcommerce.Admin.HttpApi.Client.csproj", "{7EBFAEDA-A7FB-4A6D-80BF-8F6E7D45BDE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABPEcommerce.Admin.HttpApi.Client", "src\ABPEcommerce.Admin.HttpApi.Client\ABPEcommerce.Admin.HttpApi.Client.csproj", "{7EBFAEDA-A7FB-4A6D-80BF-8F6E7D45BDE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABPEcommerce.Admin.HttpApi.Host", "src\ABPEcommerce.Admin.HttpApi.Host\ABPEcommerce.Admin.HttpApi.Host.csproj", "{34D97B63-6960-4563-892A-7FC41AD37EFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABPEcommerce.Admin.HttpApi.Host", "src\ABPEcommerce.Admin.HttpApi.Host\ABPEcommerce.Admin.HttpApi.Host.csproj", "{34D97B63-6960-4563-892A-7FC41AD37EFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

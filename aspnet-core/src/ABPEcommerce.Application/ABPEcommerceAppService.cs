@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ABPEcommerce.Localization;
+﻿using ABPEcommerce.Localization;
 using Volo.Abp.Application.Services;
 
 namespace ABPEcommerce;
