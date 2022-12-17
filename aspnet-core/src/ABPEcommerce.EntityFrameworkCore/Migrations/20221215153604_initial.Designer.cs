@@ -12,8 +12,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ABPEcommerce.Migrations
 {
     [DbContext(typeof(ABPEcommerceDbContext))]
-    [Migration("20221214143042_Initial")]
-    partial class Initial
+    [Migration("20221215153604_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
