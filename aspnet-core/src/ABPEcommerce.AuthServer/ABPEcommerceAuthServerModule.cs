@@ -53,7 +53,7 @@ public class ABPEcommerceAuthServerModule : AbpModule
         {
             builder.AddValidation(options =>
             {
-                options.AddAudiences("ABPEcommerce");
+                options.AddAudiences("ABPEcommerce", "ABPEcommerce.Admin");
                 options.UseLocalServer();
                 options.UseAspNetCore();
             });

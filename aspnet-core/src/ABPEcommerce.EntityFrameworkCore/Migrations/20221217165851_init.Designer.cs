@@ -12,8 +12,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ABPEcommerce.Migrations
 {
     [DbContext(typeof(ABPEcommerceDbContext))]
-    [Migration("20221217102312_create_entity")]
-    partial class create_entity
+    [Migration("20221217165851_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

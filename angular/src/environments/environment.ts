@@ -10,17 +10,18 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44375/',
+    issuer: 'https://localhost:5000/',
     redirectUri: baseUrl,
-    clientId: 'ABPEcommerce_App',
+    clientId: 'ABPEcommerce_Admin',
     responseType: 'code',
-    scope: 'offline_access ABPEcommerce',
+    dummyClientSecret: '1q2w3e*',
+    scope: 'offline_access ABPEcommerce.Admin',
     requireHttps: true,
   },
   apis: {
     default: {
-      url: 'https://localhost:44332',
-      rootNamespace: 'ABPEcommerce',
+      url: 'https://localhost:5001',
+      rootNamespace: 'ABPEcommerce.Admin',
     },
   },
 } as Environment;

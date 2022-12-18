@@ -85,9 +85,16 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             OpenIddictConstants.Permissions.Scopes.Email,
             OpenIddictConstants.Permissions.Scopes.Phone,
             OpenIddictConstants.Permissions.Scopes.Profile,
-            OpenIddictConstants.Permissions.Scopes.Roles,
-            "ABPEcommerce"
+            OpenIddictConstants.Permissions.Scopes.Roles 
+          
         };
+        var adminScopes = new List<string>();
+        adminScopes.AddRange(commonScopes);
+        adminScopes.Add("ABPEcommerce.Admin");
+
+        var clientScopes = new List<string>();
+        clientScopes.AddRange(commonScopes);
+        clientScopes.Add("ABPEcommerce");
 
         var configurationSection = _configuration.GetSection("OpenIddict:Applications");
 
@@ -95,7 +102,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         var webAdminClientId = configurationSection["ABPEcommerce_Admin:ClientId"];
         if (!webAdminClientId.IsNullOrWhiteSpace())
         {
-            var adminWebClientRootUrl = configurationSection["ABPEcommerce_Admin:RootUrl"].EnsureEndsWith('/');
+            var adminWebClientRootUrl = configurationSection["ABPEcommerce_Admin:RootUrl"].TrimEnd('/');
             await CreateApplicationAsync(
                 name: webAdminClientId,
                 type: OpenIddictConstants.ClientTypes.Confidential,
@@ -108,10 +115,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.RefreshToken,
                     OpenIddictConstants.GrantTypes.Implicit
                 },
-                scopes: commonScopes,
-                redirectUri: $"{adminWebClientRootUrl}signin-oidc",
+                scopes: adminScopes,
+                redirectUri: adminWebClientRootUrl,
                 clientUri: adminWebClientRootUrl,
-                postLogoutRedirectUri: $"{adminWebClientRootUrl}signout-callback-oidc"
+                postLogoutRedirectUri: adminWebClientRootUrl
             );
         }
 
@@ -134,84 +141,13 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
                     OpenIddictConstants.GrantTypes.Implicit
                 },
-                scopes: commonScopes,
+                scopes: clientScopes,
                 redirectUri: $"{webClientRootUrl}signin-oidc",
                 clientUri: webClientRootUrl,
                 postLogoutRedirectUri: $"{webClientRootUrl}signout-callback-oidc"
             );
         }
 
-        //Console Test / Angular Client
-        var consoleAndAngularClientId = configurationSection["ABPEcommerce_App:ClientId"];
-        if (!consoleAndAngularClientId.IsNullOrWhiteSpace())
-        {
-            var consoleAndAngularClientRootUrl = configurationSection["ABPEcommerce_App:RootUrl"]?.TrimEnd('/');
-            await CreateApplicationAsync(
-                name: consoleAndAngularClientId,
-                type: OpenIddictConstants.ClientTypes.Public,
-                consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "Console Test / Angular Application",
-                secret: null,
-                grantTypes: new List<string>
-                {
-                    OpenIddictConstants.GrantTypes.AuthorizationCode,
-                    OpenIddictConstants.GrantTypes.Password,
-                    OpenIddictConstants.GrantTypes.ClientCredentials,
-                    OpenIddictConstants.GrantTypes.RefreshToken
-                },
-                scopes: commonScopes,
-                redirectUri: consoleAndAngularClientRootUrl,
-                clientUri: consoleAndAngularClientRootUrl,
-                postLogoutRedirectUri: consoleAndAngularClientRootUrl
-            );
-        }
-
-        // Blazor Client
-        var blazorClientId = configurationSection["ABPEcommerce_Blazor:ClientId"];
-        if (!blazorClientId.IsNullOrWhiteSpace())
-        {
-            var blazorRootUrl = configurationSection["ABPEcommerce_Blazor:RootUrl"].TrimEnd('/');
-
-            await CreateApplicationAsync(
-                name: blazorClientId,
-                type: OpenIddictConstants.ClientTypes.Public,
-                consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "Blazor Application",
-                secret: null,
-                grantTypes: new List<string>
-                {
-                    OpenIddictConstants.GrantTypes.AuthorizationCode,
-                },
-                scopes: commonScopes,
-                redirectUri: $"{blazorRootUrl}/authentication/login-callback",
-                clientUri: blazorRootUrl,
-                postLogoutRedirectUri: $"{blazorRootUrl}/authentication/logout-callback"
-            );
-        }
-
-        // Blazor Server Tiered Client
-        var blazorServerTieredClientId = configurationSection["ABPEcommerce_BlazorServerTiered:ClientId"];
-        if (!blazorServerTieredClientId.IsNullOrWhiteSpace())
-        {
-            var blazorServerTieredRootUrl = configurationSection["ABPEcommerce_BlazorServerTiered:RootUrl"].EnsureEndsWith('/');
-
-            await CreateApplicationAsync(
-                name: blazorServerTieredClientId,
-                type: OpenIddictConstants.ClientTypes.Confidential,
-                consentType: OpenIddictConstants.ConsentTypes.Implicit,
-                displayName: "Blazor Server Application",
-                secret: configurationSection["ABPEcommerce_BlazorServerTiered:ClientSecret"] ?? "1q2w3e*",
-                grantTypes: new List<string> //Hybrid flow
-                {
-                    OpenIddictConstants.GrantTypes.AuthorizationCode,
-                    OpenIddictConstants.GrantTypes.Implicit
-                },
-                scopes: commonScopes,
-                redirectUri: $"{blazorServerTieredRootUrl}signin-oidc",
-                clientUri: blazorServerTieredRootUrl,
-                postLogoutRedirectUri: $"{blazorServerTieredRootUrl}signout-callback-oidc"
-            );
-        }
 
         // Swagger Client
         var swaggerClientId = configurationSection["ABPEcommerce_Swagger:ClientId"];
@@ -229,7 +165,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 {
                     OpenIddictConstants.GrantTypes.AuthorizationCode,
                 },
-                scopes: commonScopes,
+                scopes: adminScopes,
                 redirectUri: $"{swaggerRootUrl}/swagger/oauth2-redirect.html",
                 clientUri: swaggerRootUrl
             );
