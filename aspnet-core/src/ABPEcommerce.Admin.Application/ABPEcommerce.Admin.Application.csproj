@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\common.props" />
 	<PropertyGroup>
@@ -16,5 +16,11 @@
 		<PackageReference Include="Volo.Abp.TenantManagement.Application" Version="6.0.2" />
 		<PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="6.0.2" />
 		<PackageReference Include="Volo.Abp.SettingManagement.Application" Version="6.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="ProductCategories\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="ProductCategories\" />
 	</ItemGroup>
 </Project>
