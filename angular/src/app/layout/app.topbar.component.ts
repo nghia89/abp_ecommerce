@@ -1,4 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { LOGIN_URL } from '@share/contants/url.const';
+import { AuthService } from '@share/services/auth.service';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 
@@ -9,6 +12,7 @@ import { LayoutService } from "./service/app.layout.service";
 export class AppTopBarComponent {
 
     items!: MenuItem[];
+    userMenuItems: MenuItem[];
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
@@ -16,5 +20,27 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService, private authService: AuthService, private router: Router) { }
+    ngOnInit(): void {
+        this.userMenuItems = [
+            {
+                label: 'Xem thông tin cá nhân',
+                icon: 'pi pi-id-card',
+                routerLink: ['/profile'],
+            },
+            {
+                label: 'Đổi mật khẩu',
+                icon: 'pi pi-key',
+                routerLink: ['/change-password'],
+            },
+            {
+                label: 'Đăng xuất',
+                icon: 'pi pi-sign-out',
+                command: event => {
+                    this.authService.logout();
+                    this.router.navigate([LOGIN_URL]);
+                },
+            },
+        ];
+    }
 }
