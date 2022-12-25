@@ -24,6 +24,16 @@ namespace ABPEcommerce.Admin.ProductCategories
             _repository = repository;
         }
 
+        public async Task<List<ProductCategoryInListDto>> GetListAllAsync()
+        {
+            var query = await Repository.GetQueryableAsync();
+            query = query.Where(x => x.IsActive == true);
+            var data = await AsyncExecuter.ToListAsync(query);
+
+            return ObjectMapper.Map<List<ProductCategory>, List<ProductCategoryInListDto>>(data);
+
+        }
+
         public async Task<PagedResultDto<ProductCategoryInListDto>> GetListFilterAsync(BaseListFilterDto input)
         {
             var query = await _repository.GetQueryableAsync();
