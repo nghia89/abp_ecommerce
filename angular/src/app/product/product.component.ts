@@ -70,4 +70,14 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.maxResultCount = event.rows;
     this.loadData();
   }
+
+  private toggleBlockUI(enabled: boolean) {
+    if (enabled == true) {
+      this.blockedPanel = true;
+    } else {
+      setTimeout(() => {
+        this.blockedPanel = false;
+      }, 1000);
+    }
+  }
 }
