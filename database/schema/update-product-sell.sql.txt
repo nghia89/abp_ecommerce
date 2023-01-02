@@ -1,0 +1,9 @@
+START TRANSACTION;
+
+ALTER TABLE `AppProducts` ADD `SellPrice` double NOT NULL DEFAULT 0.0;
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20230102100454_update-product', '6.0.5');
+
+COMMIT;
+

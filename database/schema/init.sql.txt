@@ -1,0 +1,780 @@
+CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
+    `MigrationId` varchar(150) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductVersion` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
+) CHARACTER SET=utf8mb4;
+
+START TRANSACTION;
+
+ALTER DATABASE CHARACTER SET utf8mb4;
+
+CREATE TABLE `AbpAuditLogs` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ApplicationName` varchar(96) CHARACTER SET utf8mb4 NULL,
+    `UserId` char(36) COLLATE ascii_general_ci NULL,
+    `UserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `TenantName` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ImpersonatorUserId` char(36) COLLATE ascii_general_ci NULL,
+    `ImpersonatorUserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `ImpersonatorTenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ImpersonatorTenantName` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ExecutionTime` datetime(6) NOT NULL,
+    `ExecutionDuration` int NOT NULL,
+    `ClientIpAddress` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ClientName` varchar(128) CHARACTER SET utf8mb4 NULL,
+    `ClientId` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `CorrelationId` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `BrowserInfo` varchar(512) CHARACTER SET utf8mb4 NULL,
+    `HttpMethod` varchar(16) CHARACTER SET utf8mb4 NULL,
+    `Url` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `Exceptions` longtext CHARACTER SET utf8mb4 NULL,
+    `Comments` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `HttpStatusCode` int NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpAuditLogs` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpBackgroundJobs` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `JobName` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `JobArgs` longtext CHARACTER SET utf8mb4 NOT NULL,
+    `TryCount` smallint NOT NULL DEFAULT 0,
+    `CreationTime` datetime(6) NOT NULL,
+    `NextTryTime` datetime(6) NOT NULL,
+    `LastTryTime` datetime(6) NULL,
+    `IsAbandoned` tinyint(1) NOT NULL DEFAULT FALSE,
+    `Priority` tinyint unsigned NOT NULL DEFAULT 15,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpBackgroundJobs` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpClaimTypes` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `Required` tinyint(1) NOT NULL,
+    `IsStatic` tinyint(1) NOT NULL,
+    `Regex` varchar(512) CHARACTER SET utf8mb4 NULL,
+    `RegexDescription` varchar(128) CHARACTER SET utf8mb4 NULL,
+    `Description` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `ValueType` int NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpClaimTypes` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpFeatureValues` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Value` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderName` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ProviderKey` varchar(64) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpFeatureValues` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpLinkUsers` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `SourceUserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `SourceTenantId` char(36) COLLATE ascii_general_ci NULL,
+    `TargetUserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TargetTenantId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AbpLinkUsers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpOrganizationUnits` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ParentId` char(36) COLLATE ascii_general_ci NULL,
+    `Code` varchar(95) CHARACTER SET utf8mb4 NOT NULL,
+    `DisplayName` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_AbpOrganizationUnits` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AbpOrganizationUnits_AbpOrganizationUnits_ParentId` FOREIGN KEY (`ParentId`) REFERENCES `AbpOrganizationUnits` (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpPermissionGrants` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `Name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderName` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderKey` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AbpPermissionGrants` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpRoles` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `Name` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `NormalizedName` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `IsDefault` tinyint(1) NOT NULL,
+    `IsStatic` tinyint(1) NOT NULL,
+    `IsPublic` tinyint(1) NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpRoles` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpSecurityLogs` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ApplicationName` varchar(96) CHARACTER SET utf8mb4 NULL,
+    `Identity` varchar(96) CHARACTER SET utf8mb4 NULL,
+    `Action` varchar(96) CHARACTER SET utf8mb4 NULL,
+    `UserId` char(36) COLLATE ascii_general_ci NULL,
+    `UserName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `TenantName` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ClientId` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `CorrelationId` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ClientIpAddress` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `BrowserInfo` varchar(512) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpSecurityLogs` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpSettings` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `Value` varchar(2048) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderName` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `ProviderKey` varchar(64) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpSettings` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpTenants` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_AbpTenants` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpUsers` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `UserName` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `Surname` varchar(64) CHARACTER SET utf8mb4 NULL,
+    `Email` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `EmailConfirmed` tinyint(1) NOT NULL DEFAULT FALSE,
+    `PasswordHash` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `SecurityStamp` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `IsExternal` tinyint(1) NOT NULL DEFAULT FALSE,
+    `PhoneNumber` varchar(16) CHARACTER SET utf8mb4 NULL,
+    `PhoneNumberConfirmed` tinyint(1) NOT NULL DEFAULT FALSE,
+    `IsActive` tinyint(1) NOT NULL,
+    `TwoFactorEnabled` tinyint(1) NOT NULL DEFAULT FALSE,
+    `LockoutEnd` datetime(6) NULL,
+    `LockoutEnabled` tinyint(1) NOT NULL DEFAULT FALSE,
+    `AccessFailedCount` int NOT NULL DEFAULT 0,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_AbpUsers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppInventories` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `SKU` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `StockQuantity` int NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppInventories` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppInventoryTicketItems` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TicketId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `SKU` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Quantity` int NOT NULL,
+    `BatchNumber` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `ExpiredDate` datetime(6) NULL,
+    CONSTRAINT `PK_AppInventoryTicketItems` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppInventoryTickets` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `TicketType` int NOT NULL,
+    `IsApproved` tinyint(1) NOT NULL,
+    `ApproverId` char(36) COLLATE ascii_general_ci NULL,
+    `ApprovedDate` datetime(6) NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppInventoryTickets` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppManufacturers` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Slug` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `CoverPicture` varchar(250) CHARACTER SET utf8mb4 NULL,
+    `Visibility` tinyint(1) NOT NULL,
+    `IsActive` tinyint(1) NOT NULL,
+    `Country` longtext CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppManufacturers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppOrderItems` (
+    `OrderId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `SKU` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Quantity` int NOT NULL,
+    `Price` double NOT NULL,
+    CONSTRAINT `PK_AppOrderItems` PRIMARY KEY (`ProductId`, `OrderId`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppOrders` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Status` int NOT NULL,
+    `PaymentMethod` int NOT NULL,
+    `ShippingFee` double NOT NULL,
+    `Tax` double NOT NULL,
+    `Total` double NOT NULL,
+    `Subtotal` double NOT NULL,
+    `Discount` double NOT NULL,
+    `GrandTotal` double NOT NULL,
+    `CustomerName` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `CustomerPhoneNumber` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `CustomerAddress` varchar(250) CHARACTER SET utf8mb4 NOT NULL,
+    `CustomerUserId` char(36) COLLATE ascii_general_ci NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_AppOrders` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppOrderTransactions` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `OrderId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `UserId` char(36) COLLATE ascii_general_ci NULL,
+    `TransactionType` int NOT NULL,
+    `Note` longtext CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppOrderTransactions` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductAttributeDateTimes` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `AttributeId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Value` datetime(6) NOT NULL,
+    CONSTRAINT `PK_AppProductAttributeDateTimes` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductAttributeDecimals` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `AttributeId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Value` decimal(65,30) NOT NULL,
+    CONSTRAINT `PK_AppProductAttributeDecimals` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductAttributeInts` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `AttributeId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Value` int NOT NULL,
+    CONSTRAINT `PK_AppProductAttributeInts` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductAttributes` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `DataType` int NOT NULL,
+    `Label` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `SortOrder` int NOT NULL,
+    `Visibility` tinyint(1) NOT NULL,
+    `IsActive` tinyint(1) NOT NULL,
+    `IsRequired` tinyint(1) NOT NULL,
+    `IsUnique` tinyint(1) NOT NULL,
+    `Note` longtext CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppProductAttributes` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductAttributeTexts` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `AttributeId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Value` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AppProductAttributeTexts` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductAttributeVarchars` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `AttributeId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Value` varchar(500) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AppProductAttributeVarchars` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductCategories` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Slug` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `SortOrder` int NOT NULL,
+    `CoverPicture` varchar(250) CHARACTER SET utf8mb4 NULL,
+    `Visibility` tinyint(1) NOT NULL,
+    `IsActive` tinyint(1) NOT NULL,
+    `ParentId` char(36) COLLATE ascii_general_ci NULL,
+    `SeoMetaDescription` varchar(250) CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppProductCategories` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductLinks` (
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `LinkedProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    CONSTRAINT `PK_AppProductLinks` PRIMARY KEY (`ProductId`, `LinkedProductId`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductReviews` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ParentId` char(36) COLLATE ascii_general_ci NULL,
+    `Title` varchar(250) CHARACTER SET utf8mb4 NOT NULL,
+    `Rating` double NOT NULL,
+    `PublishedDate` datetime(6) NULL,
+    `Content` longtext CHARACTER SET utf8mb4 NULL,
+    `OrderId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppProductReviews` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProducts` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ManufacturerId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Slug` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `ProductType` int NOT NULL,
+    `SKU` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `SortOrder` int NOT NULL,
+    `Visiblity` tinyint(1) NOT NULL,
+    `IsActive` tinyint(1) NOT NULL,
+    `CategoryId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `SeoMetaDescription` varchar(250) CHARACTER SET utf8mb4 NULL,
+    `Description` longtext CHARACTER SET utf8mb4 NULL,
+    `ThumbnailPicture` varchar(250) CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppProducts` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppProductTags` (
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TagId` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AppProductTags` PRIMARY KEY (`ProductId`, `TagId`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppPromotionCategories` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `CategoryId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `PromotionId` char(36) COLLATE ascii_general_ci NOT NULL,
+    CONSTRAINT `PK_AppPromotionCategories` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppPromotionManufacturers` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ManufactureId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `PromotionId` char(36) COLLATE ascii_general_ci NOT NULL,
+    CONSTRAINT `PK_AppPromotionManufacturers` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppPromotionProducts` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ProductId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `PromotionId` char(36) COLLATE ascii_general_ci NOT NULL,
+    CONSTRAINT `PK_AppPromotionProducts` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppPromotions` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `CouponCode` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `RequireUseCouponCode` tinyint(1) NOT NULL,
+    `ValidDate` datetime(6) NOT NULL,
+    `ExpiredDate` datetime(6) NULL,
+    `DiscountAmount` double NOT NULL,
+    `DiscountUnit` int NOT NULL,
+    `LimitedUsageTimes` tinyint(1) NOT NULL,
+    `MaximumDiscountAmount` int unsigned NOT NULL,
+    `IsActive` tinyint(1) NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AppPromotions` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppPromotionUsageHistories` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `PromotionId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `OrderId` char(36) COLLATE ascii_general_ci NOT NULL,
+    CONSTRAINT `PK_AppPromotionUsageHistories` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AppTags` (
+    `Id` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AppTags` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `OpenIddictApplications` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ClientId` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `ClientSecret` longtext CHARACTER SET utf8mb4 NULL,
+    `ConsentType` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `DisplayName` longtext CHARACTER SET utf8mb4 NULL,
+    `DisplayNames` longtext CHARACTER SET utf8mb4 NULL,
+    `Permissions` longtext CHARACTER SET utf8mb4 NULL,
+    `PostLogoutRedirectUris` longtext CHARACTER SET utf8mb4 NULL,
+    `Properties` longtext CHARACTER SET utf8mb4 NULL,
+    `RedirectUris` longtext CHARACTER SET utf8mb4 NULL,
+    `Requirements` longtext CHARACTER SET utf8mb4 NULL,
+    `Type` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `ClientUri` longtext CHARACTER SET utf8mb4 NULL,
+    `LogoUri` longtext CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_OpenIddictApplications` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `OpenIddictScopes` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Description` longtext CHARACTER SET utf8mb4 NULL,
+    `Descriptions` longtext CHARACTER SET utf8mb4 NULL,
+    `DisplayName` longtext CHARACTER SET utf8mb4 NULL,
+    `DisplayNames` longtext CHARACTER SET utf8mb4 NULL,
+    `Name` varchar(200) CHARACTER SET utf8mb4 NULL,
+    `Properties` longtext CHARACTER SET utf8mb4 NULL,
+    `Resources` longtext CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_OpenIddictScopes` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpAuditLogActions` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `AuditLogId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ServiceName` varchar(256) CHARACTER SET utf8mb4 NULL,
+    `MethodName` varchar(128) CHARACTER SET utf8mb4 NULL,
+    `Parameters` varchar(2000) CHARACTER SET utf8mb4 NULL,
+    `ExecutionTime` datetime(6) NOT NULL,
+    `ExecutionDuration` int NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpAuditLogActions` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AbpAuditLogActions_AbpAuditLogs_AuditLogId` FOREIGN KEY (`AuditLogId`) REFERENCES `AbpAuditLogs` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpEntityChanges` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `AuditLogId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ChangeTime` datetime(6) NOT NULL,
+    `ChangeType` tinyint unsigned NOT NULL,
+    `EntityTenantId` char(36) COLLATE ascii_general_ci NULL,
+    `EntityId` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `EntityTypeFullName` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpEntityChanges` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AbpEntityChanges_AbpAuditLogs_AuditLogId` FOREIGN KEY (`AuditLogId`) REFERENCES `AbpAuditLogs` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpOrganizationUnitRoles` (
+    `RoleId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `OrganizationUnitId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AbpOrganizationUnitRoles` PRIMARY KEY (`OrganizationUnitId`, `RoleId`),
+    CONSTRAINT `FK_AbpOrganizationUnitRoles_AbpOrganizationUnits_OrganizationUn~` FOREIGN KEY (`OrganizationUnitId`) REFERENCES `AbpOrganizationUnits` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_AbpOrganizationUnitRoles_AbpRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AbpRoles` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpRoleClaims` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `RoleId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ClaimType` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimValue` varchar(1024) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpRoleClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AbpRoleClaims_AbpRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AbpRoles` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpTenantConnectionStrings` (
+    `TenantId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `Name` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    `Value` varchar(1024) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AbpTenantConnectionStrings` PRIMARY KEY (`TenantId`, `Name`),
+    CONSTRAINT `FK_AbpTenantConnectionStrings_AbpTenants_TenantId` FOREIGN KEY (`TenantId`) REFERENCES `AbpTenants` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpUserClaims` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `UserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ClaimType` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+    `ClaimValue` varchar(1024) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpUserClaims` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AbpUserClaims_AbpUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AbpUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpUserLogins` (
+    `UserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `LoginProvider` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `ProviderKey` varchar(196) CHARACTER SET utf8mb4 NOT NULL,
+    `ProviderDisplayName` varchar(128) CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpUserLogins` PRIMARY KEY (`UserId`, `LoginProvider`),
+    CONSTRAINT `FK_AbpUserLogins_AbpUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AbpUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpUserOrganizationUnits` (
+    `UserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `OrganizationUnitId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AbpUserOrganizationUnits` PRIMARY KEY (`OrganizationUnitId`, `UserId`),
+    CONSTRAINT `FK_AbpUserOrganizationUnits_AbpOrganizationUnits_OrganizationUn~` FOREIGN KEY (`OrganizationUnitId`) REFERENCES `AbpOrganizationUnits` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_AbpUserOrganizationUnits_AbpUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AbpUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpUserRoles` (
+    `UserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `RoleId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    CONSTRAINT `PK_AbpUserRoles` PRIMARY KEY (`UserId`, `RoleId`),
+    CONSTRAINT `FK_AbpUserRoles_AbpRoles_RoleId` FOREIGN KEY (`RoleId`) REFERENCES `AbpRoles` (`Id`) ON DELETE CASCADE,
+    CONSTRAINT `FK_AbpUserRoles_AbpUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AbpUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpUserTokens` (
+    `UserId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `LoginProvider` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    `Name` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `Value` longtext CHARACTER SET utf8mb4 NULL,
+    CONSTRAINT `PK_AbpUserTokens` PRIMARY KEY (`UserId`, `LoginProvider`, `Name`),
+    CONSTRAINT `FK_AbpUserTokens_AbpUsers_UserId` FOREIGN KEY (`UserId`) REFERENCES `AbpUsers` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `OpenIddictAuthorizations` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ApplicationId` char(36) COLLATE ascii_general_ci NULL,
+    `CreationDate` datetime(6) NULL,
+    `Properties` longtext CHARACTER SET utf8mb4 NULL,
+    `Scopes` longtext CHARACTER SET utf8mb4 NULL,
+    `Status` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `Subject` varchar(400) CHARACTER SET utf8mb4 NULL,
+    `Type` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_OpenIddictAuthorizations` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_OpenIddictAuthorizations_OpenIddictApplications_ApplicationId` FOREIGN KEY (`ApplicationId`) REFERENCES `OpenIddictApplications` (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `AbpEntityPropertyChanges` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `TenantId` char(36) COLLATE ascii_general_ci NULL,
+    `EntityChangeId` char(36) COLLATE ascii_general_ci NOT NULL,
+    `NewValue` varchar(512) CHARACTER SET utf8mb4 NULL,
+    `OriginalValue` varchar(512) CHARACTER SET utf8mb4 NULL,
+    `PropertyName` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `PropertyTypeFullName` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_AbpEntityPropertyChanges` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_AbpEntityPropertyChanges_AbpEntityChanges_EntityChangeId` FOREIGN KEY (`EntityChangeId`) REFERENCES `AbpEntityChanges` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+
+CREATE TABLE `OpenIddictTokens` (
+    `Id` char(36) COLLATE ascii_general_ci NOT NULL,
+    `ApplicationId` char(36) COLLATE ascii_general_ci NULL,
+    `AuthorizationId` char(36) COLLATE ascii_general_ci NULL,
+    `CreationDate` datetime(6) NULL,
+    `ExpirationDate` datetime(6) NULL,
+    `Payload` longtext CHARACTER SET utf8mb4 NULL,
+    `Properties` longtext CHARACTER SET utf8mb4 NULL,
+    `RedemptionDate` datetime(6) NULL,
+    `ReferenceId` varchar(100) CHARACTER SET utf8mb4 NULL,
+    `Status` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `Subject` varchar(400) CHARACTER SET utf8mb4 NULL,
+    `Type` varchar(50) CHARACTER SET utf8mb4 NULL,
+    `ExtraProperties` longtext CHARACTER SET utf8mb4 NULL,
+    `ConcurrencyStamp` varchar(40) CHARACTER SET utf8mb4 NULL,
+    `CreationTime` datetime(6) NOT NULL,
+    `CreatorId` char(36) COLLATE ascii_general_ci NULL,
+    `LastModificationTime` datetime(6) NULL,
+    `LastModifierId` char(36) COLLATE ascii_general_ci NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT FALSE,
+    `DeleterId` char(36) COLLATE ascii_general_ci NULL,
+    `DeletionTime` datetime(6) NULL,
+    CONSTRAINT `PK_OpenIddictTokens` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_OpenIddictTokens_OpenIddictApplications_ApplicationId` FOREIGN KEY (`ApplicationId`) REFERENCES `OpenIddictApplications` (`Id`),
+    CONSTRAINT `FK_OpenIddictTokens_OpenIddictAuthorizations_AuthorizationId` FOREIGN KEY (`AuthorizationId`) REFERENCES `OpenIddictAuthorizations` (`Id`)
+) CHARACTER SET=utf8mb4;
+
+CREATE INDEX `IX_AbpAuditLogActions_AuditLogId` ON `AbpAuditLogActions` (`AuditLogId`);
+
+CREATE INDEX `IX_AbpAuditLogActions_TenantId_ServiceName_MethodName_Execution~` ON `AbpAuditLogActions` (`TenantId`, `ServiceName`, `MethodName`, `ExecutionTime`);
+
+CREATE INDEX `IX_AbpAuditLogs_TenantId_ExecutionTime` ON `AbpAuditLogs` (`TenantId`, `ExecutionTime`);
+
+CREATE INDEX `IX_AbpAuditLogs_TenantId_UserId_ExecutionTime` ON `AbpAuditLogs` (`TenantId`, `UserId`, `ExecutionTime`);
+
+CREATE INDEX `IX_AbpBackgroundJobs_IsAbandoned_NextTryTime` ON `AbpBackgroundJobs` (`IsAbandoned`, `NextTryTime`);
+
+CREATE INDEX `IX_AbpEntityChanges_AuditLogId` ON `AbpEntityChanges` (`AuditLogId`);
+
+CREATE INDEX `IX_AbpEntityChanges_TenantId_EntityTypeFullName_EntityId` ON `AbpEntityChanges` (`TenantId`, `EntityTypeFullName`, `EntityId`);
+
+CREATE INDEX `IX_AbpEntityPropertyChanges_EntityChangeId` ON `AbpEntityPropertyChanges` (`EntityChangeId`);
+
+CREATE UNIQUE INDEX `IX_AbpFeatureValues_Name_ProviderName_ProviderKey` ON `AbpFeatureValues` (`Name`, `ProviderName`, `ProviderKey`);
+
+CREATE UNIQUE INDEX `IX_AbpLinkUsers_SourceUserId_SourceTenantId_TargetUserId_Target~` ON `AbpLinkUsers` (`SourceUserId`, `SourceTenantId`, `TargetUserId`, `TargetTenantId`);
+
+CREATE INDEX `IX_AbpOrganizationUnitRoles_RoleId_OrganizationUnitId` ON `AbpOrganizationUnitRoles` (`RoleId`, `OrganizationUnitId`);
+
+CREATE INDEX `IX_AbpOrganizationUnits_Code` ON `AbpOrganizationUnits` (`Code`);
+
+CREATE INDEX `IX_AbpOrganizationUnits_ParentId` ON `AbpOrganizationUnits` (`ParentId`);
+
+CREATE UNIQUE INDEX `IX_AbpPermissionGrants_TenantId_Name_ProviderName_ProviderKey` ON `AbpPermissionGrants` (`TenantId`, `Name`, `ProviderName`, `ProviderKey`);
+
+CREATE INDEX `IX_AbpRoleClaims_RoleId` ON `AbpRoleClaims` (`RoleId`);
+
+CREATE INDEX `IX_AbpRoles_NormalizedName` ON `AbpRoles` (`NormalizedName`);
+
+CREATE INDEX `IX_AbpSecurityLogs_TenantId_Action` ON `AbpSecurityLogs` (`TenantId`, `Action`);
+
+CREATE INDEX `IX_AbpSecurityLogs_TenantId_ApplicationName` ON `AbpSecurityLogs` (`TenantId`, `ApplicationName`);
+
+CREATE INDEX `IX_AbpSecurityLogs_TenantId_Identity` ON `AbpSecurityLogs` (`TenantId`, `Identity`);
+
+CREATE INDEX `IX_AbpSecurityLogs_TenantId_UserId` ON `AbpSecurityLogs` (`TenantId`, `UserId`);
+
+CREATE UNIQUE INDEX `IX_AbpSettings_Name_ProviderName_ProviderKey` ON `AbpSettings` (`Name`, `ProviderName`, `ProviderKey`);
+
+CREATE INDEX `IX_AbpTenants_Name` ON `AbpTenants` (`Name`);
+
+CREATE INDEX `IX_AbpUserClaims_UserId` ON `AbpUserClaims` (`UserId`);
+
+CREATE INDEX `IX_AbpUserLogins_LoginProvider_ProviderKey` ON `AbpUserLogins` (`LoginProvider`, `ProviderKey`);
+
+CREATE INDEX `IX_AbpUserOrganizationUnits_UserId_OrganizationUnitId` ON `AbpUserOrganizationUnits` (`UserId`, `OrganizationUnitId`);
+
+CREATE INDEX `IX_AbpUserRoles_RoleId_UserId` ON `AbpUserRoles` (`RoleId`, `UserId`);
+
+CREATE INDEX `IX_AbpUsers_Email` ON `AbpUsers` (`Email`);
+
+CREATE INDEX `IX_AbpUsers_NormalizedEmail` ON `AbpUsers` (`NormalizedEmail`);
+
+CREATE INDEX `IX_AbpUsers_NormalizedUserName` ON `AbpUsers` (`NormalizedUserName`);
+
+CREATE INDEX `IX_AbpUsers_UserName` ON `AbpUsers` (`UserName`);
+
+CREATE INDEX `IX_OpenIddictApplications_ClientId` ON `OpenIddictApplications` (`ClientId`);
+
+CREATE INDEX `IX_OpenIddictAuthorizations_ApplicationId_Status_Subject_Type` ON `OpenIddictAuthorizations` (`ApplicationId`, `Status`, `Subject`, `Type`);
+
+CREATE INDEX `IX_OpenIddictScopes_Name` ON `OpenIddictScopes` (`Name`);
+
+CREATE INDEX `IX_OpenIddictTokens_ApplicationId_Status_Subject_Type` ON `OpenIddictTokens` (`ApplicationId`, `Status`, `Subject`, `Type`);
+
+CREATE INDEX `IX_OpenIddictTokens_AuthorizationId` ON `OpenIddictTokens` (`AuthorizationId`);
+
+CREATE INDEX `IX_OpenIddictTokens_ReferenceId` ON `OpenIddictTokens` (`ReferenceId`);
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20221217165851_init', '6.0.5');
+
+COMMIT;
+

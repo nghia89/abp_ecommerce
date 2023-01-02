@@ -1,9 +1,13 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { productTypeOptions } from '@proxy/abpecommerce/products';
+import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturers';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
 import { ProductDto, ProductInListDto, ProductsService } from '@proxy/products';
-import { Subject, takeUntil } from 'rxjs';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { UtilityService } from '../shared/services/utility.service';
 
 @Component({
     selector: 'app-product-detail',
@@ -24,7 +28,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     constructor(
         private productService: ProductsService,
         private productCategoryService: ProductCategoriesService,
-        private fb: FormBuilder
+        private manufacturerService: ManufacturersService,
+        private fb: FormBuilder,
+        private config: DynamicDialogConfig,
+        private ref: DynamicDialogRef,
+        private utilService: UtilityService
     ) { }
 
     validationMessages = {
@@ -39,15 +47,56 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         categoryId: [{ type: 'required', message: 'Bạn phải chọn danh mục' }],
         productType: [{ type: 'required', message: 'Bạn phải chọn loại sản phẩm' }],
         sortOrder: [{ type: 'required', message: 'Bạn phải nhập thứ tự' }],
-        sellPrice: [{ type: 'required', message: 'Bạn phải nhập giá bán' }]
+        sellPrice: [{ type: 'required', message: 'Bạn phải nhập giá bán' }],
     };
 
     ngOnDestroy(): void { }
 
     ngOnInit(): void {
         this.buildForm();
-    }
+        this.loadProductTypes();
+        //Load data to form
+        var productCategories = this.productCategoryService.getListAll();
+        var manufacturers = this.manufacturerService.getListAll();
+        this.toggleBlockUI(true);
+        forkJoin({
+            productCategories,
+            manufacturers,
+        })
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe({
+                next: (response: any) => {
+                    //Push data to dropdown
+                    var productCategories = response.productCategories as ProductCategoryInListDto[];
+                    var manufacturers = response.manufacturers as ManufacturerInListDto[];
+                    productCategories.forEach(element => {
+                        this.productCategories.push({
+                            value: element.id,
+                            label: element.name,
+                        });
+                    });
 
+                    manufacturers.forEach(element => {
+                        this.manufacturers.push({
+                            value: element.id,
+                            label: element.name,
+                        });
+                    });
+                    //Load edit data to form
+                    if (this.utilService.isEmpty(this.config.data?.id) == true) {
+                        this.toggleBlockUI(false);
+                    } else {
+                        this.loadFormDetails(this.config.data?.id);
+                    }
+                },
+                error: () => {
+                    this.toggleBlockUI(false);
+                },
+            });
+    }
+    generateSlug() {
+        this.form.controls['slug'].setValue(this.utilService.MakeSeoTitle(this.form.get('name').value));
+    }
     loadFormDetails(id: string) {
         this.toggleBlockUI(true);
         this.productService
@@ -64,18 +113,48 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
                 },
             });
     }
-    saveChange() { }
-    loadProductCategories() {
-        this.productCategoryService.getListAll().subscribe((response: ProductCategoryInListDto[]) => {
-            response.forEach(element => {
-                this.productCategories.push({
-                    value: element.id,
-                    name: element.name,
+
+    saveChange() {
+        this.toggleBlockUI(true);
+
+        if (this.utilService.isEmpty(this.config.data?.id) == true) {
+            this.productService
+                .create(this.form.value)
+                .pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe({
+                    next: () => {
+                        this.toggleBlockUI(false);
+
+                        this.ref.close(this.form.value);
+                    },
+                    error: () => {
+                        this.toggleBlockUI(false);
+                    },
                 });
+        } else {
+            this.productService
+                .update(this.config.data?.id, this.form.value)
+                .pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe({
+                    next: () => {
+                        this.toggleBlockUI(false);
+                        this.ref.close(this.form.value);
+                    },
+                    error: () => {
+                        this.toggleBlockUI(false);
+                    },
+                });
+        }
+    }
+
+    loadProductTypes() {
+        productTypeOptions.forEach(element => {
+            this.productTypes.push({
+                value: element.value,
+                label: element.key,
             });
         });
     }
-
     private buildForm() {
         this.form = this.fb.group({
             name: new FormControl(
@@ -93,7 +172,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             productType: new FormControl(this.selectedEntity.productType || null, Validators.required),
             sortOrder: new FormControl(this.selectedEntity.sortOrder || null, Validators.required),
             sellPrice: new FormControl(this.selectedEntity.sellPrice || null, Validators.required),
-            visibility: new FormControl(this.selectedEntity.visiblity || true),
+            visibility: new FormControl(this.selectedEntity.visibility || true),
             isActive: new FormControl(this.selectedEntity.isActive || true),
             seoMetaDescription: new FormControl(this.selectedEntity.seoMetaDescription || null),
             description: new FormControl(this.selectedEntity.description || null),
