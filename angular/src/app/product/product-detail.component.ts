@@ -5,6 +5,7 @@ import { productTypeOptions } from '@proxy/abpecommerce/products';
 import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturers';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
 import { ProductDto, ProductInListDto, ProductsService } from '@proxy/products';
+import { NotificationService } from '@share/services/notification.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { UtilityService } from '../shared/services/utility.service';
@@ -32,7 +33,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private config: DynamicDialogConfig,
         private ref: DynamicDialogRef,
-        private utilService: UtilityService
+        private utilService: UtilityService,
+        private notificationSerivce: NotificationService
     ) { }
 
     validationMessages = {
@@ -127,7 +129,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
                         this.ref.close(this.form.value);
                     },
-                    error: () => {
+                    error: (err) => {
+                        this.notificationSerivce.showError(err.error.error.message);
                         this.toggleBlockUI(false);
                     },
                 });
@@ -140,7 +143,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
                         this.toggleBlockUI(false);
                         this.ref.close(this.form.value);
                     },
-                    error: () => {
+                    error: (err) => {
+                        this.notificationSerivce.showError(err.error.error.message);
                         this.toggleBlockUI(false);
                     },
                 });

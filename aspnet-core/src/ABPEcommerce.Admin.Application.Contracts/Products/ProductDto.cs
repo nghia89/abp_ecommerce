@@ -24,7 +24,7 @@ namespace ABPEcommerce.Admin.Products
 
         public double SellPrice { get; set; }
         public Guid Id { get; set; }
-        public string CreategoryName { get; set; }
-        public string CreategorySlug { get; set; }
+        public string CategoryName { get; set; }
+        public string CategorySlug { get; set; }
     }
 }

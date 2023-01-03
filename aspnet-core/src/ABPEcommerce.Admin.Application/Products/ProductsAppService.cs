@@ -1,10 +1,12 @@
-﻿using ABPEcommerce.Products;
+﻿using ABPEcommerce.ProductCategoties;
+using ABPEcommerce.Products;
 using AutoMapper.Internal.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -20,10 +22,58 @@ namespace ABPEcommerce.Admin.Products
         CreateUpdateProductDto,
         CreateUpdateProductDto>, IProductsAppService
     {
-        public ProductsAppService(IRepository<Product, Guid> repository)
+        private readonly ProductManager _productManager;
+        private readonly IRepository<ProductCategory> _productCategoryRepository;
+        public ProductsAppService(IRepository<Product, Guid> repository,
+            ProductManager productManager, 
+            IRepository<ProductCategory> productCategoryRepository)
             : base(repository)
         {
+            _productManager = productManager;
+            _productCategoryRepository = productCategoryRepository;
         }
+        public override async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
+        {
+            var product = await _productManager.CreateAsync(input.ManufacturerId, input.Name, input.Code, input.Slug, input.ProductType, input.SKU,
+                input.SortOrder, input.Visibility, input.IsActive, input.CategoryId, input.SeoMetaDescription, input.Description, input.ThumbnailPicture, input.SellPrice);
+
+            var result = await Repository.InsertAsync(product);
+
+            return ObjectMapper.Map<Product, ProductDto>(result);
+        }
+
+        public override async Task<ProductDto> UpdateAsync(Guid id, CreateUpdateProductDto input)
+        {
+            var product = await Repository.GetAsync(id);
+            if (product == null)
+                throw new BusinessException("ProductIsNotExists");
+            product.ManufacturerId = input.ManufacturerId;
+            product.Name = input.Name;
+            product.Code = input.Code;
+            product.Slug = input.Slug;
+            product.ProductType = input.ProductType;
+            product.SKU = input.SKU;
+            product.SortOrder = input.SortOrder;
+            product.Visibility = input.Visibility;
+            product.IsActive = input.IsActive;
+
+            if (product.CategoryId != input.CategoryId)
+            {
+                product.CategoryId = input.CategoryId;
+                var category = await _productCategoryRepository.GetAsync(x => x.Id == input.CategoryId);
+                product.CategoryName = category.Name;
+                product.CategorySlug = category.Slug;
+            }
+            product.SeoMetaDescription = input.SeoMetaDescription;
+            product.Description = input.Description;
+            product.ThumbnailPicture = input.ThumbnailPicture;
+            product.SellPrice = input.SellPrice;
+            await Repository.UpdateAsync(product);
+
+            return ObjectMapper.Map<Product, ProductDto>(product);
+        }
+
+
 
         public async Task DeleteMultipleAsync(IEnumerable<Guid> ids)
         {
