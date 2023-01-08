@@ -26,6 +26,8 @@ using ABPEcommerce.Configurations.ProductAttributes;
 using ABPEcommerce.Configurations.ProductCategories;
 using ABPEcommerce.Configurations.Products;
 using ABPEcommerce.Configurations.Promotions;
+using ABPEcommerce.IdentitySettings;
+using ABPEcommerce.Configurations.IdentitySettings;
 
 namespace ABPEcommerce.EntityFrameworkCore;
 
@@ -91,6 +93,7 @@ public class ABPEcommerceDbContext :
     public DbSet<PromotionManufacturer> PromotionManufacturers { get; set; }
     public DbSet<PromotionProduct> PromotionProducts { get; set; }
     public DbSet<PromotionUsageHistory> PromotionUsageHistories { get; set; }
+    public DbSet<IdentitySetting> IdentitySettings { get; set; }
 
     #endregion
 
@@ -148,5 +151,6 @@ public class ABPEcommerceDbContext :
         builder.ApplyConfiguration(new PromotionManufacturerConfiguration());
         builder.ApplyConfiguration(new PromotionProductConfiguration());
         builder.ApplyConfiguration(new PromotionUsageHistoryConfiguration());
+        builder.ApplyConfiguration(new IdentitySettingConfiguration());
     }
 }
