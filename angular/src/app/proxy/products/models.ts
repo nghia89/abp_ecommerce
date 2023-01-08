@@ -15,7 +15,8 @@ export interface CreateUpdateProductDto {
   categoryId?: string;
   seoMetaDescription?: string;
   description?: string;
-  thumbnailPicture?: string;
+  thumbnailPictureName?: string;
+  thumbnailPictureContent?: string;
   sellPrice: number;
 }
 

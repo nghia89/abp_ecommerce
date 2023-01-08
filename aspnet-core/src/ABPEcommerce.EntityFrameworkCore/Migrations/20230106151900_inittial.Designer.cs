@@ -12,8 +12,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace ABPEcommerce.Migrations
 {
     [DbContext(typeof(ABPEcommerceDbContext))]
-    [Migration("20230102154957_add-filed-product-categoryname")]
-    partial class addfiledproductcategoryname
+    [Migration("20230106151900_inittial")]
+    partial class inittial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -508,6 +508,12 @@ namespace ABPEcommerce.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CategorySlug")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -519,12 +525,6 @@ namespace ABPEcommerce.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("varchar(40)")
                         .HasColumnName("ConcurrencyStamp");
-
-                    b.Property<string>("CreategoryName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CreategorySlug")
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime(6)")

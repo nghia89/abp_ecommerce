@@ -1,6 +1,7 @@
 import { PagedResultDto } from '@abp/ng.core';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { productTypeOptions } from '@proxy/abpecommerce/products';
 import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturers';
 import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
@@ -19,6 +20,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     blockedPanel: boolean = false;
     btnDisabled = false;
     public form: FormGroup;
+    public thumbnailImage;
 
     //Dropdown
     productCategories: any[] = [];
@@ -34,7 +36,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         private config: DynamicDialogConfig,
         private ref: DynamicDialogRef,
         private utilService: UtilityService,
-        private notificationSerivce: NotificationService
+        private notificationSerivce: NotificationService,
+        private cd: ChangeDetectorRef,
+        private sanitizer: DomSanitizer
     ) { }
 
     validationMessages = {
@@ -107,6 +111,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (response: ProductDto) => {
                     this.selectedEntity = response;
+                    this.loadThumbnail(response.thumbnailPicture)
                     this.buildForm();
                     this.toggleBlockUI(false);
                 },
@@ -180,7 +185,40 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             isActive: new FormControl(this.selectedEntity.isActive || true),
             seoMetaDescription: new FormControl(this.selectedEntity.seoMetaDescription || null),
             description: new FormControl(this.selectedEntity.description || null),
+            thumbnailPictureName: new FormControl(this.selectedEntity.description || null),
+            thumbnailPictureContent: new FormControl(null)
         });
+    }
+
+    loadThumbnail(fileName: string) {
+        this.productService.getThumbnailImage(fileName)
+            .pipe(takeUntil(this.ngUnsubscribe))
+            .subscribe({
+                next: (response: string) => {
+                    var fileExt = this.selectedEntity.thumbnailPicture?.split('.').pop();
+                    this.thumbnailImage = this.sanitizer.bypassSecurityTrustResourceUrl(
+                        `data:image/${fileExt};base64, ${response}`
+                    );
+                },
+            });
+    }
+
+    onFileChange(event) {
+        const reader = new FileReader();
+
+        if (event.target.files && event.target.files.length) {
+            const [file] = event.target.files;
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                this.form.patchValue({
+                    thumbnailPictureName: file.name,
+                    thumbnailPictureContent: reader.result,
+                });
+
+                // need to run CD since file load runs outside of zone
+                this.cd.markForCheck();
+            };
+        }
     }
 
     private toggleBlockUI(enabled: boolean) {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ABPEcommerce.Migrations
 {
-    public partial class init : Migration
+    public partial class inittial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -730,7 +730,7 @@ namespace ABPEcommerce.Migrations
                     SKU = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SortOrder = table.Column<int>(type: "int", nullable: false),
-                    Visiblity = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Visibility = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     SeoMetaDescription = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true)
@@ -738,6 +738,11 @@ namespace ABPEcommerce.Migrations
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ThumbnailPicture = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SellPrice = table.Column<double>(type: "double", nullable: false),
+                    CategoryName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CategorySlug = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ExtraProperties = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
