@@ -8,6 +8,8 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '@share/services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BlockUIModule } from 'primeng/blockui';
 @NgModule({
     imports: [
         CommonModule,
@@ -17,7 +19,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         InputTextModule,
         FormsModule,
         PasswordModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ProgressSpinnerModule,
+        BlockUIModule
     ],
     declarations: [LoginComponent],
     providers: [AuthService]

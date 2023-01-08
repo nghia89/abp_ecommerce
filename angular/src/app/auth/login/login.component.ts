@@ -1,8 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '@share/contants/keys.const';
+import { LoginResponseDto } from '@share/models/login-response.dto';
 import { AuthService } from '@share/services/auth.service';
+import { NotificationService } from '@share/services/notification.service';
+import { TokenStorageService } from '@share/services/token.service';
 import { Subject, takeUntil } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { LoginRequestDto } from 'src/app/shared/models/login-request.dto';
@@ -25,11 +27,14 @@ export class LoginComponent implements OnDestroy {
 
     password!: string;
     loginForm: FormGroup;
+    public blockedPanel: boolean = false;
     constructor(
         public layoutService: LayoutService,
         private fb: FormBuilder,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private tokenService: TokenStorageService,
+        private notificationService: NotificationService
 
     ) {
         this.loginForm = this.fb.group({
@@ -42,16 +47,37 @@ export class LoginComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
     login() {
+        this.toggleBlockUI(true);
         var request: LoginRequestDto = {
-            username: this.loginForm.controls["username"].value,
-            password: this.loginForm.controls['password'].value
-        }
-        this.authService.login(request)
+            username: this.loginForm.controls['username'].value,
+            password: this.loginForm.controls['password'].value,
+        };
+        this.authService
+            .login(request)
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(res => {
-                localStorage.setItem(ACCESS_TOKEN, res.access_token);
-                localStorage.setItem(REFRESH_TOKEN, res.refresh_token);
-                this.router.navigate(['']);
+            .subscribe({
+                next: (res: LoginResponseDto) => {
+                    this.tokenService.saveToken(res.access_token);
+                    this.tokenService.saveRefreshToken(res.refresh_token);
+                    this.toggleBlockUI(false);
+                    this.router.navigate(['']);
+                },
+                error: (ex) => {
+                    this.notificationService.showError("Đăng nhập không đúng.")
+                    this.toggleBlockUI(false);
+                },
             });
     }
+
+    private toggleBlockUI(enabled: boolean) {
+        if (enabled == true) {
+            this.blockedPanel = true;
+        } else {
+            setTimeout(() => {
+                this.blockedPanel = false;
+            }, 1000);
+        }
+    }
+
+
 }

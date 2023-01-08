@@ -1,6 +1,7 @@
 ﻿using ABPEcommerce.ProductCategoties;
 using ABPEcommerce.Products;
 using AutoMapper.Internal.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ using Volo.Abp.Uow;
 
 namespace ABPEcommerce.Admin.Products
 {
+    [Authorize]
     public class ProductsAppService : CrudAppService<
         Product,
         ProductDto,

@@ -104,7 +104,7 @@ public class ABPEcommerceHttpApiHostModule : AbpModule
             {
                 options.Authority = configuration["AuthServer:Authority"];
                 options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "ABPEcommerce";
+                options.Audience = "ABPEcommerce.Admin";
             });
     }
 

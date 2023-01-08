@@ -8,7 +8,7 @@
                     <span class="text-600 font-medium">Sign in to continue</span>
                 </div>
 
-                <div class="w-full md:w-10 mx-auto" [formGroup]="loginForm">
+                <form class="w-full md:w-10 mx-auto" [formGroup]="loginForm">
                     <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
                     <input id="email1" type="text" formControlName="username"  placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
 
@@ -23,7 +23,10 @@
                         <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                     </div>
                     <button pButton pRipple (click)="login()" label="Sign In" class="w-full p-3 text-xl"  ></button>
-                </div>
+                </form>
+                <p-blockUI [blocked]="blockedPanel">
+                    <p-progressSpinner></p-progressSpinner>
+                </p-blockUI>
             </div>
         </div>
     </div>
