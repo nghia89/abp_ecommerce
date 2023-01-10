@@ -1,6 +1,8 @@
 ﻿using ABPEcommerce.Admin.Manufacturers;
+using ABPEcommerce.Admin.ProductAttributes;
 using ABPEcommerce.Admin.ProductCategories;
 using ABPEcommerce.Admin.Products;
+using ABPEcommerce.Attributes;
 using ABPEcommerce.Manufacturers;
 using ABPEcommerce.ProductCategoties;
 using ABPEcommerce.Products;
@@ -26,5 +28,10 @@ public class ABPEcommerceApplicationAutoMapperProfile : Profile
         CreateMap<Manufacturer, ManufacturerDto>();
         CreateMap<Manufacturer, ManufacturerInListDto>();
         CreateMap<CreateUpdateManufacturerDto, Manufacturer>();
+
+        //Product attribute
+        CreateMap<ProductAttribute, ProductAttributeDto>();
+        CreateMap<ProductAttribute, ProductAttributeInListDto>();
+        CreateMap<CreateUpdateProductAttributeDto, ProductAttribute>();
     }
 }
