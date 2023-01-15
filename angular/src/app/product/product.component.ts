@@ -7,6 +7,7 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../shared/services/notification.service';
+import { ProductAttributeComponent } from './product-attribute.component';
 import { ProductDetailComponent } from './product-detail.component';
 
 @Component({
@@ -123,6 +124,24 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.loadData();
         this.selectedItems = [];
         this.notificationService.showSuccess('Thêm sản phẩm thành công');
+      }
+    });
+  }
+
+  manageProductAttribute(id: string) {
+    const ref = this.dialogService.open(ProductAttributeComponent, {
+      data: {
+        id: id,
+      },
+      header: 'Quản lý thuộc tính sản phẩm',
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((data: ProductDto) => {
+      if (data) {
+        this.loadData();
+        this.selectedItems = [];
+        this.notificationService.showSuccess('Cập nhật thuộc tính sản phẩm thành công');
       }
     });
   }
