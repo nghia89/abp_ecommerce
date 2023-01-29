@@ -2,11 +2,14 @@
 using ABPEcommerce.Admin.ProductAttributes;
 using ABPEcommerce.Admin.ProductCategories;
 using ABPEcommerce.Admin.Products;
+using ABPEcommerce.Admin.Roles;
 using ABPEcommerce.Attributes;
 using ABPEcommerce.Manufacturers;
 using ABPEcommerce.ProductCategoties;
 using ABPEcommerce.Products;
+using ABPEcommerce.Roles;
 using AutoMapper;
+using Volo.Abp.Identity;
 
 namespace ABPEcommerce.Admin;
 
@@ -33,5 +36,20 @@ public class ABPEcommerceApplicationAutoMapperProfile : Profile
         CreateMap<ProductAttribute, ProductAttributeDto>();
         CreateMap<ProductAttribute, ProductAttributeInListDto>();
         CreateMap<CreateUpdateProductAttributeDto, ProductAttribute>();
+
+        //Roles
+        CreateMap<IdentityRole, RoleDto>().ForMember(x => x.Description,
+            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName)
+            ?
+            x.ExtraProperties[RoleConsts.DescriptionFieldName]
+            :
+            null));
+        CreateMap<IdentityRole, RoleInListDto>().ForMember(x => x.Description,
+            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName)
+            ?
+            x.ExtraProperties[RoleConsts.DescriptionFieldName]
+            :
+            null));
+        CreateMap<CreateUpdateRoleDto, IdentityRole>();
     }
 }
