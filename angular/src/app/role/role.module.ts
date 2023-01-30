@@ -21,9 +21,10 @@ import { RoleDetailComponent } from './role-detail.component';
 import { RoleRoutingModule } from './role-routing.module';
 import { RoleComponent } from './role.component';
 import { AppSharedModule } from "../shared/modules/app-share-module";
+import { PermissionGrantComponent } from './permission-grant.component';
 @NgModule({
-    declarations: [RoleComponent, RoleDetailComponent],
-    entryComponents: [RoleDetailComponent],
+    declarations: [RoleComponent, RoleDetailComponent, PermissionGrantComponent],
+    entryComponents: [RoleDetailComponent, PermissionGrantComponent],
     imports: [
         SharedModule,
         PanelModule,
