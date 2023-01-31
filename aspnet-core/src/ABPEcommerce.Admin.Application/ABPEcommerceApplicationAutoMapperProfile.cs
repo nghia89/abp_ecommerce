@@ -1,8 +1,8 @@
-﻿using ABPEcommerce.Admin.Manufacturers;
-using ABPEcommerce.Admin.ProductAttributes;
-using ABPEcommerce.Admin.ProductCategories;
-using ABPEcommerce.Admin.Products;
-using ABPEcommerce.Admin.Roles;
+﻿using ABPEcommerce.Admin.Catalog.Manufacturers;
+using ABPEcommerce.Admin.Catalog.ProductAttributes;
+using ABPEcommerce.Admin.Catalog.ProductCategories;
+using ABPEcommerce.Admin.Catalog.Products;
+using ABPEcommerce.Admin.System.Roles;
 using ABPEcommerce.Attributes;
 using ABPEcommerce.Manufacturers;
 using ABPEcommerce.ProductCategoties;
