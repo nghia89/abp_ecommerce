@@ -3,6 +3,7 @@ using ABPEcommerce.Admin.Catalog.ProductAttributes;
 using ABPEcommerce.Admin.Catalog.ProductCategories;
 using ABPEcommerce.Admin.Catalog.Products;
 using ABPEcommerce.Admin.System.Roles;
+using ABPEcommerce.Admin.System.Users;
 using ABPEcommerce.Attributes;
 using ABPEcommerce.Manufacturers;
 using ABPEcommerce.ProductCategoties;
@@ -51,5 +52,9 @@ public class ABPEcommerceApplicationAutoMapperProfile : Profile
             :
             null));
         CreateMap<CreateUpdateRoleDto, IdentityRole>();
+
+        //User
+        CreateMap<IdentityUser, UserDto>();
+        CreateMap<IdentityUser, UserInListDto>();
     }
 }
