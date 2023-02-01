@@ -26,7 +26,8 @@ import { UserComponent } from './user/user.component';
 import { UserDetailComponent } from './user/user-detail.component';
 import { RoleAssignComponent } from './user/role-assign.component';
 import { PickListModule } from 'primeng/picklist';
-
+import { SetPasswordComponent } from './user/set-password.component';
+import { KeyFilterModule } from 'primeng/keyfilter';
 @NgModule({
     declarations: [
         RoleComponent,
@@ -34,9 +35,10 @@ import { PickListModule } from 'primeng/picklist';
         PermissionGrantComponent,
         UserComponent,
         UserDetailComponent,
-        RoleAssignComponent
+        RoleAssignComponent,
+        SetPasswordComponent
     ],
-    entryComponents: [RoleDetailComponent, PermissionGrantComponent, UserDetailComponent, RoleAssignComponent],
+    entryComponents: [RoleDetailComponent, PermissionGrantComponent, UserDetailComponent, RoleAssignComponent, SetPasswordComponent],
     imports: [
         SharedModule,
         PanelModule,
@@ -58,7 +60,8 @@ import { PickListModule } from 'primeng/picklist';
         CalendarModule,
         SystemRoutingModule,
         AppSharedModule,
-        PickListModule
+        PickListModule,
+        KeyFilterModule
     ]
 })
 export class SystemModule { }

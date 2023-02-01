@@ -11,6 +11,7 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Uow;
 using Volo.Abp;
+using Volo.Abp.Account;
 
 namespace ABPEcommerce.Admin.System.Users
 {
@@ -161,6 +162,28 @@ namespace ABPEcommerce.Admin.System.Users
                 var errorList = new List<Microsoft.AspNetCore.Identity.IdentityError>();
                 errorList.AddRange(addedErrorList);
                 errorList.AddRange(removedErrorList);
+                string errors = "";
+
+                foreach (var error in errorList)
+                {
+                    errors = errors + error.Description.ToString();
+                }
+                throw new UserFriendlyException(errors);
+            }
+        }
+
+        public async Task SetPasswordAsync(Guid userId, SetPasswordDto input)
+        {
+            var user = await _identityUserManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new EntityNotFoundException(typeof(IdentityUser), userId);
+            }
+            var token = await _identityUserManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _identityUserManager.ResetPasswordAsync(user, token, input.NewPassword);
+            if (!result.Succeeded)
+            {
+                List<Microsoft.AspNetCore.Identity.IdentityError> errorList = result.Errors.ToList();
                 string errors = "";
 
                 foreach (var error in errorList)
