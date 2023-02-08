@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ABPEcommerce.Admin.Permissions;
 using ABPEcommerce.Manufacturers;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
@@ -10,7 +11,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace ABPEcommerce.Admin.Catalog.Manufacturers
 {
-    [Authorize]
+    [Authorize(ABPEcommercePermissions.Manufacturer.Default, Policy = "AdminOnly")]
     public class ManufacturersAppService : CrudAppService<
         Manufacturer,
         ManufacturerDto,
@@ -24,8 +25,21 @@ namespace ABPEcommerce.Admin.Catalog.Manufacturers
             : base(repository)
         {
             _repository = repository;
+            GetPolicyName = ABPEcommercePermissions.Manufacturer.Default;
+            GetListPolicyName = ABPEcommercePermissions.Manufacturer.Default;
+            CreatePolicyName = ABPEcommercePermissions.Manufacturer.Create;
+            UpdatePolicyName = ABPEcommercePermissions.Manufacturer.Update;
+            DeletePolicyName = ABPEcommercePermissions.Manufacturer.Delete;
         }
 
+        [Authorize(ABPEcommercePermissions.Manufacturer.Delete)]
+        public async Task DeleteMultipleAsync(IEnumerable<Guid> ids)
+        {
+            await Repository.DeleteManyAsync(ids);
+            await UnitOfWorkManager.Current.SaveChangesAsync();
+        }
+
+        [Authorize(ABPEcommercePermissions.Manufacturer.Default)]
         public async Task<List<ManufacturerInListDto>> GetListAllAsync()
         {
             var query = await Repository.GetQueryableAsync();
@@ -36,6 +50,8 @@ namespace ABPEcommerce.Admin.Catalog.Manufacturers
 
         }
 
+
+        [Authorize(ABPEcommercePermissions.Manufacturer.Default)]
         public async Task<PagedResultDto<ManufacturerInListDto>> GetListFilterAsync(BaseListFilterDto input)
         {
             var query = await _repository.GetQueryableAsync();

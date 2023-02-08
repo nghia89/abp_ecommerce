@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ABPEcommerce.Admin;
+using ABPEcommerce.Admin.Permissions;
 using ABPEcommerce.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
@@ -11,7 +12,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace ABPEcommerce.Admin.Catalog.ProductAttributes;
 
-[Authorize]
+[Authorize(ABPEcommercePermissions.Attribute.Default, Policy = "AdminOnly")]
 public class ProductAttributesAppService : CrudAppService<
         ProductAttribute,
         ProductAttributeDto,
@@ -23,14 +24,21 @@ public class ProductAttributesAppService : CrudAppService<
     public ProductAttributesAppService(IRepository<ProductAttribute, Guid> repository)
         : base(repository)
     {
+        GetPolicyName = ABPEcommercePermissions.Attribute.Default;
+        GetListPolicyName = ABPEcommercePermissions.Attribute.Default;
+        CreatePolicyName = ABPEcommercePermissions.Attribute.Create;
+        UpdatePolicyName = ABPEcommercePermissions.Attribute.Update;
+        DeletePolicyName = ABPEcommercePermissions.Attribute.Delete;
     }
 
+    [Authorize(ABPEcommercePermissions.Attribute.Delete)]
     public async Task DeleteMultipleAsync(IEnumerable<Guid> ids)
     {
         await Repository.DeleteManyAsync(ids);
         await UnitOfWorkManager.Current.SaveChangesAsync();
     }
 
+    [Authorize(ABPEcommercePermissions.Attribute.Default)]
     public async Task<List<ProductAttributeInListDto>> GetListAllAsync()
     {
         var query = await Repository.GetQueryableAsync();
@@ -41,6 +49,7 @@ public class ProductAttributesAppService : CrudAppService<
 
     }
 
+    [Authorize(ABPEcommercePermissions.Attribute.Default)]
     public async Task<PagedResultDto<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input)
     {
         var query = await Repository.GetQueryableAsync();

@@ -1,4 +1,5 @@
 ﻿using ABPEcommerce.Admin.Catalog.Products.Attributes;
+using ABPEcommerce.Admin.Permissions;
 using ABPEcommerce.Attributes;
 using ABPEcommerce.ProductCategoties;
 using ABPEcommerce.Products;
@@ -19,7 +20,8 @@ using Volo.Abp.Uow;
 
 namespace ABPEcommerce.Admin.Catalog.Products
 {
-    [Authorize]
+
+    [Authorize(ABPEcommercePermissions.Product.Default, Policy = "AdminOnly")]
     public class ProductsAppService : CrudAppService<
         Product,
         ProductDto,
@@ -61,7 +63,15 @@ namespace ABPEcommerce.Admin.Catalog.Products
             _productAttributeDecimalRepository = productAttributeDecimalRepository;
             _productAttributeVarcharRepository = productAttributeVarcharRepository;
             _productAttributeTextRepository = productAttributeTextRepository;
+
+            GetPolicyName = ABPEcommercePermissions.Product.Default;
+            GetListPolicyName = ABPEcommercePermissions.Product.Default;
+            CreatePolicyName = ABPEcommercePermissions.Product.Create;
+            UpdatePolicyName = ABPEcommercePermissions.Product.Update;
+            DeletePolicyName = ABPEcommercePermissions.Product.Delete;
         }
+
+        [Authorize(ABPEcommercePermissions.Product.Create)]
         public override async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
         {
             var product = await _productManager.CreateAsync(input.ManufacturerId, input.Name, input.Code, input.Slug, input.ProductType, input.SKU,
@@ -78,6 +88,7 @@ namespace ABPEcommerce.Admin.Catalog.Products
             return ObjectMapper.Map<Product, ProductDto>(result);
         }
 
+        [Authorize(ABPEcommercePermissions.Product.Update)]
         public override async Task<ProductDto> UpdateAsync(Guid id, CreateUpdateProductDto input)
         {
             var product = await Repository.GetAsync(id);
@@ -115,13 +126,14 @@ namespace ABPEcommerce.Admin.Catalog.Products
         }
 
 
-
+        [Authorize(ABPEcommercePermissions.Product.Delete)]
         public async Task DeleteMultipleAsync(IEnumerable<Guid> ids)
         {
             await Repository.DeleteManyAsync(ids);
             await UnitOfWorkManager.Current.SaveChangesAsync();
         }
 
+        [Authorize(ABPEcommercePermissions.Product.Default)]
         public async Task<List<ProductInListDto>> GetListAllAsync()
         {
             var query = await Repository.GetQueryableAsync();
@@ -131,6 +143,7 @@ namespace ABPEcommerce.Admin.Catalog.Products
             return ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data);
         }
 
+        [Authorize(ABPEcommercePermissions.Product.Default)]
         public async Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(ProductListFilterDto input)
         {
             var query = await Repository.GetQueryableAsync();
@@ -143,6 +156,8 @@ namespace ABPEcommerce.Admin.Catalog.Products
             return new PagedResultDto<ProductInListDto>(totalCount, ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data));
         }
 
+
+        [Authorize(ABPEcommercePermissions.Product.Default)]
         private async Task SaveThumbnailImageAsync(string fileName, string base64)
         {
             Regex regex = new Regex(@"^[\w/\:.-]+;base64,");
@@ -151,6 +166,8 @@ namespace ABPEcommerce.Admin.Catalog.Products
             await _blobContainer.SaveAsync(fileName, bytes, overrideExisting: true);
         }
 
+
+        [Authorize(ABPEcommercePermissions.Product.Default)]
         public async Task<string> GetThumbnailImageAsync(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -172,6 +189,7 @@ namespace ABPEcommerce.Admin.Catalog.Products
             return await _productCodeGenerator.GenerateAsync();
         }
 
+        [Authorize(ABPEcommercePermissions.Product.Create)]
         public async Task<ProductAttributeValueDto> AddProductAttributeAsync(AddUpdateProductAttributeDto input)
         {
             var product = await Repository.GetAsync(input.ProductId);
@@ -241,6 +259,8 @@ namespace ABPEcommerce.Admin.Catalog.Products
             };
         }
 
+
+        [Authorize(ABPEcommercePermissions.Product.Update)]
         public async Task<ProductAttributeValueDto> UpdateProductAttributeAsync(Guid id, AddUpdateProductAttributeDto input)
         {
             var product = await Repository.GetAsync(input.ProductId);
@@ -335,6 +355,8 @@ namespace ABPEcommerce.Admin.Catalog.Products
             };
         }
 
+
+        [Authorize(ABPEcommercePermissions.Product.Delete)]
         public async Task RemoveProductAttributeAsync(Guid attributeId, Guid id)
         {
             var attribute = await _productAttributeRepository.GetAsync(x => x.Id == attributeId);
@@ -387,6 +409,8 @@ namespace ABPEcommerce.Admin.Catalog.Products
             await UnitOfWorkManager.Current.SaveChangesAsync();
         }
 
+
+        [Authorize(ABPEcommercePermissions.Product.Default)]
         public async Task<List<ProductAttributeValueDto>> GetListProductAttributeAllAsync(Guid productId)
         {
             var attributeQuery = await _productAttributeRepository.GetQueryableAsync();
@@ -439,6 +463,8 @@ namespace ABPEcommerce.Admin.Catalog.Products
             return await AsyncExecuter.ToListAsync(query);
         }
 
+
+        [Authorize(ABPEcommercePermissions.Product.Default)]
         public async Task<PagedResultDto<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input)
         {
             var attributeQuery = await _productAttributeRepository.GetQueryableAsync();

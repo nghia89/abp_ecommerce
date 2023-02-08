@@ -13,6 +13,7 @@ namespace ABPEcommerce.Admin.Catalog.Manufacturers
         CreateUpdateManufacturerDto,
         CreateUpdateManufacturerDto>
     {
+        Task DeleteMultipleAsync(IEnumerable<Guid> ids);
         Task<List<ManufacturerInListDto>> GetListAllAsync();
         Task<PagedResultDto<ManufacturerInListDto>> GetListFilterAsync(BaseListFilterDto input);
     }

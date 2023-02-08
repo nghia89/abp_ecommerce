@@ -189,6 +189,10 @@ public class ABPEcommerceHttpApiHostModule : AbpModule
                     .AllowCredentials();
             });
         });
+        context.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+        });
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
