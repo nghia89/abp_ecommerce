@@ -7,8 +7,7 @@ namespace ABPEcommerce.DbMigrator;
 
 [DependsOn(
     typeof(AbpAutofacModule),
-    typeof(ABPEcommerceEntityFrameworkCoreModule),
-    typeof(ABPEcommerceApplicationContractsModule)
+    typeof(ABPEcommerceEntityFrameworkCoreModule)
     )]
 public class ABPEcommerceDbMigratorModule : AbpModule
 {

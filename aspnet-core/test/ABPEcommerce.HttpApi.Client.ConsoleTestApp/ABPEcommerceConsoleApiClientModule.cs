@@ -10,7 +10,6 @@ namespace ABPEcommerce.HttpApi.Client.ConsoleTestApp;
 
 [DependsOn(
     typeof(AbpAutofacModule),
-    typeof(ABPEcommerceHttpApiClientModule),
     typeof(AbpHttpClientIdentityModelModule)
     )]
 public class ABPEcommerceConsoleApiClientModule : AbpModule
