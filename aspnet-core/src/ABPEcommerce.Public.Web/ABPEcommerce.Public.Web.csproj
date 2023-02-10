@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Shared\Components\Footer\Default.cshtml" />
+    <None Include="Pages\Shared\Components\Header\Default.cshtml" />
     <None Include="wwwroot\assets\css\plugins\bootstrap.css.map" />
     <None Include="wwwroot\assets\css\style.css.map" />
     <None Include="wwwroot\assets\css\vendors\bootstrap.min.css.map" />
