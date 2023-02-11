@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -12,7 +13,7 @@ namespace ABPEcommerce.Public.Manufacturers
         Guid, 
         PagedResultRequestDto>
     {
-        Task<PagedResultDto<ManufacturerInListDto>> GetListFilterAsync(BaseListFilterDto input);
+        Task<PagedResult<ManufacturerInListDto>> GetListFilterAsync(BaseListFilterDto input);
         Task<List<ManufacturerInListDto>> GetListAllAsync();
     }
 }

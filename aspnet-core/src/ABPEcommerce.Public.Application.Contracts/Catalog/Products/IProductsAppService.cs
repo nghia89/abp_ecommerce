@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using ABPEcommerce.Public.Products.Attributes;
@@ -13,11 +14,11 @@ namespace ABPEcommerce.Public.Products
         Guid, 
         PagedResultRequestDto>
     {
-        Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(ProductListFilterDto input);
+        Task<PagedResult<ProductInListDto>> GetListFilterAsync(ProductListFilterDto input);
         Task<List<ProductInListDto>> GetListAllAsync();
         Task<string> GetThumbnailImageAsync(string fileName);
         Task<List<ProductAttributeValueDto>> GetListProductAttributeAllAsync(Guid productId);
-        Task<PagedResultDto<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input);
+        Task<PagedResult<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input);
         Task<List<ProductInListDto>> GetListTopSellerAsync(int numberOfRecords);
     }
 }
