@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ABPEcommerce.Attributes;
+using ABPEcommerce.ProductAttributes;
 using Volo.Abp.Application.Dtos;
 
 namespace ABPEcommerce.Admin.Catalog.ProductAttributes

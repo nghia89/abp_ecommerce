@@ -1,4 +1,4 @@
-﻿using ABPEcommerce.Attributes;
+﻿using ABPEcommerce.ProductAttributes;
 using System;
 using Volo.Abp.Application.Dtos;
 

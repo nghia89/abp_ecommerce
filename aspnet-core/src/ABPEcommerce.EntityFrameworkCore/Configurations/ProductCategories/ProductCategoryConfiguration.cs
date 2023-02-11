@@ -1,4 +1,4 @@
-﻿using ABPEcommerce.ProductCategoties;
+﻿using ABPEcommerce.ProductCategories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

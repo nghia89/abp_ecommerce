@@ -1,7 +1,8 @@
 ﻿using ABPEcommerce.Admin.Catalog.Products.Attributes;
 using ABPEcommerce.Admin.Permissions;
 using ABPEcommerce.Attributes;
-using ABPEcommerce.ProductCategoties;
+using ABPEcommerce.ProductAttributes;
+using ABPEcommerce.ProductCategories;
 using ABPEcommerce.Products;
 using AutoMapper.Internal.Mappers;
 using Microsoft.AspNetCore.Authorization;

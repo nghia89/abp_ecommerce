@@ -2,7 +2,7 @@
 using ABPEcommerce.Inventories;
 using ABPEcommerce.InventoryTickets;
 using ABPEcommerce.Orders;
-using ABPEcommerce.ProductCategoties;
+using ABPEcommerce.ProductCategories;
 using ABPEcommerce.Products;
 using ABPEcommerce.Promotions;
 using Microsoft.EntityFrameworkCore;

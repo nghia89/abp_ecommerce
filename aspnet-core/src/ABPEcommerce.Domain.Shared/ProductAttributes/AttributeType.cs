@@ -1,4 +1,8 @@
-﻿namespace ABPEcommerce.Attributes
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ABPEcommerce.ProductAttributes
 {
     public enum AttributeType
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace ABPEcommerce.ProductCategoties
+namespace ABPEcommerce.ProductCategories
 {
     public class ProductCategory : CreationAuditedAggregateRoot<Guid>
     {

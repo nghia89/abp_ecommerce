@@ -1,6 +1,6 @@
-﻿using System;
-using ABPEcommerce.Attributes;
-
+﻿using ABPEcommerce.ProductAttributes;
+using System;
+ 
 namespace ABPEcommerce.Admin.Catalog.ProductAttributes
 {
     public class CreateUpdateProductAttributeDto

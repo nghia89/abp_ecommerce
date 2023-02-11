@@ -6,7 +6,7 @@ using ABPEcommerce.Admin.System.Roles;
 using ABPEcommerce.Admin.System.Users;
 using ABPEcommerce.Attributes;
 using ABPEcommerce.Manufacturers;
-using ABPEcommerce.ProductCategoties;
+using ABPEcommerce.ProductCategories;
 using ABPEcommerce.Products;
 using ABPEcommerce.Roles;
 using AutoMapper;

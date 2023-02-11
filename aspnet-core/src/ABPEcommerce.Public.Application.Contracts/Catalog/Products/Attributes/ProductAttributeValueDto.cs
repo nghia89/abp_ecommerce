@@ -1,10 +1,10 @@
-﻿using ABPEcommerce.ProductAttributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ABPEcommerce.ProductAttributes;
 using Volo.Abp.Application.Dtos;
 
-namespace ABPEcommerce.Admin.Catalog.Products.Attributes
+namespace ABPEcommerce.Public.Products.Attributes
 {
     public class ProductAttributeValueDto : IEntityDto<Guid>
     {

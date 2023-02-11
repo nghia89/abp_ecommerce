@@ -1,10 +1,12 @@
-﻿using ABPEcommerce.ProductAttributes;
-using System;
-using Volo.Abp.Domain.Entities.Auditing;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ABPEcommerce.ProductAttributes;
+using Volo.Abp.Application.Dtos;
 
-namespace ABPEcommerce.Attributes
+namespace ABPEcommerce.Public.ProductAttributes
 {
-    public class ProductAttribute : CreationAuditedAggregateRoot<Guid>
+    public class ProductAttributeInListDto : EntityDto<Guid>
     {
         public string Code { get; set; }
         public AttributeType DataType { get; set; }
@@ -14,6 +16,6 @@ namespace ABPEcommerce.Attributes
         public bool IsActive { get; set; }
         public bool IsRequired { get; set; }
         public bool IsUnique { get; set; }
-        public string Note { get; set; }
+        public Guid Id { get; set; }
     }
 }
