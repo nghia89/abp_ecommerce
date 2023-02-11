@@ -37,6 +37,7 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.Caching.StackExchangeRedis;
 
 namespace ABPEcommerce.Public.Web;
 
@@ -51,7 +52,8 @@ namespace ABPEcommerce.Public.Web;
     typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpTenantManagementWebModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule),
+    typeof(AbpCachingStackExchangeRedisModule)
     )]
 public class PublicWebModule : AbpModule
 {
