@@ -10,7 +10,7 @@ namespace ABPEcommerce.Public
         {
             public const string HomeData = "HomeData";
             public const string HeaderData = "HeaderData";
-
+            public const string Cart = "Cart";
         }
     }
 }
