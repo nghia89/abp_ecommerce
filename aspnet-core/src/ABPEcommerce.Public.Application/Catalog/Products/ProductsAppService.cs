@@ -27,6 +27,7 @@ namespace ABPEcommerce.Public.Products
         private readonly IRepository<ProductAttributeDecimal> _productAttributeDecimalRepository;
         private readonly IRepository<ProductAttributeVarchar> _productAttributeVarcharRepository;
         private readonly IRepository<ProductAttributeText> _productAttributeTextRepository;
+        private readonly IRepository<Product, Guid> _productRepository;
 
 
         public ProductsAppService(IRepository<Product, Guid> repository,
@@ -38,7 +39,8 @@ namespace ABPEcommerce.Public.Products
               IRepository<ProductAttributeDecimal> productAttributeDecimalRepository,
               IRepository<ProductAttributeVarchar> productAttributeVarcharRepository,
               IRepository<ProductAttributeText> productAttributeTextRepository
-              )
+,
+              IRepository<Product, Guid> productRepository)
             : base(repository)
         {
             _fileContainer = fileContainer;
@@ -48,6 +50,7 @@ namespace ABPEcommerce.Public.Products
             _productAttributeDecimalRepository = productAttributeDecimalRepository;
             _productAttributeVarcharRepository = productAttributeVarcharRepository;
             _productAttributeTextRepository = productAttributeTextRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<List<ProductInListDto>> GetListAllAsync()
@@ -59,6 +62,11 @@ namespace ABPEcommerce.Public.Products
             return ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data);
         }
 
+        public async Task<ProductDto> GetBySlugAsync(string slug)
+        {
+            var product = await _productRepository.GetAsync(x => x.Slug == slug);
+            return ObjectMapper.Map<Product, ProductDto>(product);
+        }
 
         public async Task<PagedResult<ProductInListDto>> GetListFilterAsync(ProductListFilterDto input)
         {

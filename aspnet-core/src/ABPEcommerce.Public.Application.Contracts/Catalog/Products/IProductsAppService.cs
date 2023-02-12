@@ -20,5 +20,6 @@ namespace ABPEcommerce.Public.Products
         Task<List<ProductAttributeValueDto>> GetListProductAttributeAllAsync(Guid productId);
         Task<PagedResult<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input);
         Task<List<ProductInListDto>> GetListTopSellerAsync(int numberOfRecords);
+        Task<ProductDto> GetBySlugAsync(string slug);
     }
 }
