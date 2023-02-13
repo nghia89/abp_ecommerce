@@ -10,4 +10,8 @@ public static class ABPEcommerceConsts
     public const string ProductIdentitySettingPrefix = "P";
 
     public const string RoleNameAlreadyExists = "RoleNameAlreadyExists";
+    public const string Cart = "Cart";
+    public const string OrderIdentitySettingId = "Order";
+
+    public const string OrderIdentitySettingPrefix = "O";
 }

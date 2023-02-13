@@ -1,9 +1,11 @@
 ﻿
 using ABPEcommerce.Attributes;
 using ABPEcommerce.Manufacturers;
+using ABPEcommerce.Orders;
 using ABPEcommerce.ProductCategories;
 using ABPEcommerce.Products;
 using ABPEcommerce.Public.Manufacturers;
+using ABPEcommerce.Public.Orders;
 using ABPEcommerce.Public.ProductAttributes;
 using ABPEcommerce.Public.ProductCategories;
 using ABPEcommerce.Public.Products;
@@ -32,6 +34,10 @@ public class ABPEcommerceApplicationAutoMapperProfile : Profile
         //Product attribute
         CreateMap<ProductAttribute, ProductAttributeDto>();
         CreateMap<ProductAttribute, ProductAttributeInListDto>();
- 
+
+        //Order
+        CreateMap<Order, OrderDto>();
+
+
     }
 }
