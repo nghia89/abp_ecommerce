@@ -25,7 +25,4 @@
     <PackageReference Include="Volo.Abp.BlobStoring.FileSystem" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Volo.Abp.BlobStoring.FileSystem" />
-  </ItemGroup>
 </Project>

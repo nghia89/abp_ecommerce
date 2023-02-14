@@ -1,4 +1,4 @@
-using ABPEcommerce.Public.Orders;
+﻿using ABPEcommerce.Public.Orders;
 using ABPEcommerce.Public.Web.Extensions;
 using ABPEcommerce.Public.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,16 +8,24 @@ using System.Threading.Tasks;
 using System;
 using System.Text.Json;
 using System.Linq;
+using Volo.Abp.TextTemplating;
+using Volo.Abp.Emailing;
+using ABPEcommerce.Emailing;
+using System.Security.Claims;
+using Volo.Abp.EventBus.Local;
+using ABPEcommerce.Orders.Events;
 
 namespace ABPEcommerce.Public.Web.Pages.Cart
 {
     public class CheckoutModel : PageModel
     {
         private readonly IOrdersAppService _ordersAppService;
-        public CheckoutModel(IOrdersAppService ordersAppService)
+        private readonly ILocalEventBus _localEventBus;
+        public CheckoutModel(IOrdersAppService ordersAppService, ILocalEventBus localEventBus)
         {
             _ordersAppService = ordersAppService;
-        }
+            _localEventBus = localEventBus;
+         }
         public List<CartItem> CartItems { get; set; }
 
         public bool? CreateStatus { set; get; }
@@ -59,7 +67,19 @@ namespace ABPEcommerce.Public.Web.Pages.Cart
             CartItems = GetCartItems();
 
             if (order != null)
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var email = User.GetSpecificClaim(ClaimTypes.Email);
+                    await _localEventBus.PublishAsync(new NewOrderCreatedEvent()
+                    {
+                        CustomerEmail = email,
+                        Message = "Create order success"
+                    });
+                }
+
                 CreateStatus = true;
+            }
             else
                 CreateStatus = false;
         }
