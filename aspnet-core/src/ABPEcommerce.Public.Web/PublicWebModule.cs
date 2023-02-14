@@ -63,7 +63,6 @@ namespace ABPEcommerce.Public.Web;
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule),
     typeof(AbpCachingStackExchangeRedisModule),
-    typeof(AbpCachingStackExchangeRedisModule),
     typeof(AbpAspNetCoreAuthenticationOAuthModule),
     typeof(AbpAspNetCoreAuthenticationOpenIdConnectModule),
     typeof(AbpHttpClientIdentityModelWebModule),
